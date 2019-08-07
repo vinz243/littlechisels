@@ -1,11 +1,15 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.41'
+    id 'org.jetbrains.kotlin.jvm' version "1.3.41"
 }
 
+
+ext {
+    kotlinVersion = '1.3.41'
+}
+
+
 group 'github.littlechisels'
-version '1.0-SNAPSHOT'
-group 'gtihub.littlechisels'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
@@ -14,9 +18,24 @@ repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events = ["passed", "skipped", "failed"]
+    }
+}
+
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-test-common:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlinVersion"
+    implementation 'org.jgrapht:jgrapht-core:1.3.1'
+
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+    testImplementation("org.junit.jupiter:junit-jupiter:5.5.0")
 }
 
 compileKotlin {
