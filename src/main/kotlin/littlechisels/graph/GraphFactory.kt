@@ -10,7 +10,7 @@ class GraphFactory {
         fun createConnectedGraph (grid: VoxelGrid): SimpleGraph<Voxel, DefaultEdge> {
             val graph = SimpleGraph<Voxel, DefaultEdge>(DefaultEdge::class.java)
 
-            val voxels = grid.box().voxelsExclusive()
+            val voxels = grid.box().voxels()
                 .map { Voxel(it, grid[it])  }
                 .filter { it.material != 0 }
                 .associateBy { it.coords }

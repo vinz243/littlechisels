@@ -8,7 +8,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
-import kotlin.math.roundToLong
 
 internal class MergerTest {
     companion object {
@@ -95,13 +94,13 @@ internal class MergerTest {
 
         val set = convert.flatMap { it.voxels() }.toSet()
 
+        println("Optimization = ${(100 * (voxels.size - convert.size) / voxels.size)}%")
+
         assertEquals(emptyList<Vec3>(),
                 voxels
                 .distinct()
                 .sortedBy(hashVector())
                 .filter { !set.contains(it) })
-
-        println("Optimization = ${(100 * (convert.size) / voxels.size)}%")
 
         assertEquals(
             set.toList() as Any, set.distinct().toList() as Any,

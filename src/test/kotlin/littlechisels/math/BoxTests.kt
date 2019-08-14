@@ -1,11 +1,11 @@
 package littlechisels.math
 
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-public class BoxTests {
+internal class BoxTests {
     @Test
     public fun contains() {
         val box = Box(Vec3(2, 1, 1), Vec3(4, 2, 3))
@@ -30,5 +30,15 @@ public class BoxTests {
     fun voxels() {
         assertEquals(Box(Vec3(1,1,1), Vec3(2,2,2)).voxels(), listOf(Vec3(1, 1, 1)))
         assertEquals(Box(Vec3(1,1,1), Vec3(2,2,3)).voxels(), listOf(Vec3(1, 1, 1), Vec3(1, 1, 2)))
+    }
+
+    @Test
+    fun boundingBox () {
+        assertEquals(Box(Vec3(1,1,1), Vec3(1,1,1)), Box.boundingBox(listOf(Vec3(1,1,1))))
+        assertEquals(Box(Vec3(1,1,1), Vec3(3,3,3)), Box.boundingBox(listOf(Vec3(1,1,1), Vec3(4,4,4))))
+
+        val vec = listOf(Vec3(5, 6, 8))
+        val voxels = Box.boundingBox(vec)!!.voxels()
+        assertEquals(vec, voxels)
     }
 }

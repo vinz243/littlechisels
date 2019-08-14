@@ -18,12 +18,9 @@ class ConvexMerger: VoxelMerger {
                             for (z in 0 until (dim.z - depth)) {
                                 val min = Vec3(x, y, z)
                                 val box = Box(min, min + (dims))
-
                                 if (!contains(boxes, box)) {
-
                                     val voxels = box.voxels()
-                                    val first = voxels[0]
-                                    val value = grid[first.x, first.y, first.z]
+                                    val value = grid[voxels[0]]
                                     if (value != 0 && voxels.all {
                                                 grid[it.x, it.y, it.z] == value
                                             }) {

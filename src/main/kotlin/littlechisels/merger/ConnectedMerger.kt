@@ -21,7 +21,7 @@ class ConnectedMerger(private val merger: VoxelMerger): VoxelMerger {
 
         val flatMap = connectedSets.flatMap { voxels ->
             val boundingBox = Box.boundingBox(voxels.map { it.coords })
-            val grid = VoxelGrid(boundingBox.dimensions() + 1)
+            val grid = VoxelGrid(boundingBox!!.dimensions() + 1)
             voxels.forEach { vec ->
                 grid[vec.coords - boundingBox.min] = vec.material
             }

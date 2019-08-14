@@ -3,7 +3,7 @@ package littlechisels.math
 import littlechisels.math.Box
 import littlechisels.math.Vec3
 
-class VoxelGrid(val dimensions: Vec3,
+data class VoxelGrid(val dimensions: Vec3,
                 private val grid: IntArray = IntArray(dimensions.x * dimensions.y * dimensions.z) { 0 }) {
 
     operator fun get(x: Int, y: Int, z: Int): Int {
@@ -31,4 +31,22 @@ class VoxelGrid(val dimensions: Vec3,
     )
 
     private fun getIndex(x: Int, y: Int, z: Int) = x + dimensions.x * (y + dimensions.y * z)
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as VoxelGrid
+
+        if (dimensions != other.dimensions) return false
+        if (!grid.contentEquals(other.grid)) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = dimensions.hashCode()
+        result = 31 * result + grid.contentHashCode()
+        return result
+    }
 }
