@@ -6,9 +6,9 @@ import littlechisels.math.VoxelGrid
 import org.jgrapht.alg.connectivity.ConnectivityInspector
 
 class ConnectedMerger(private val merger: VoxelMerger): VoxelMerger {
-    override fun convert(input: VoxelGrid): List<Box> {
+    override fun convert(grid: VoxelGrid): List<Box> {
         var millis = System.currentTimeMillis()
-        val connectedGraph = GraphFactory.createConnectedGraph(input)
+        val connectedGraph = GraphFactory.createConnectedGraph(grid)
 
         println("Established graph in ${System.currentTimeMillis() - millis}ms")
         millis = System.currentTimeMillis()
@@ -21,11 +21,13 @@ class ConnectedMerger(private val merger: VoxelMerger): VoxelMerger {
 
         val flatMap = connectedSets.flatMap { voxels ->
             val boundingBox = Box.boundingBox(voxels.map { it.coords })
-            val grid = VoxelGrid(boundingBox!!.dimensions() + 1)
+            val smallerGrid = VoxelGrid(boundingBox!!.dimensions())
+            val offset = boundingBox.min
             voxels.forEach { vec ->
-                grid[vec.coords - boundingBox.min] = vec.material
+                smallerGrid[vec.coords - offset] = vec.material
             }
-            merger.convert(grid)
+            val converted = merger.convert(smallerGrid)
+            converted.map { it + offset }
         }
 
         println("Merged ${System.currentTimeMillis() - millis}ms")

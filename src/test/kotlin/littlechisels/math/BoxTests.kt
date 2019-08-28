@@ -28,17 +28,24 @@ internal class BoxTests {
 
     @Test
     fun voxels() {
+        assertEquals(Box(Vec3(0,0,0), Vec3(1,1,1)).voxels(), listOf(Vec3(0, 0, 0)))
         assertEquals(Box(Vec3(1,1,1), Vec3(2,2,2)).voxels(), listOf(Vec3(1, 1, 1)))
         assertEquals(Box(Vec3(1,1,1), Vec3(2,2,3)).voxels(), listOf(Vec3(1, 1, 1), Vec3(1, 1, 2)))
     }
 
     @Test
     fun boundingBox () {
-        assertEquals(Box(Vec3(1,1,1), Vec3(1,1,1)), Box.boundingBox(listOf(Vec3(1,1,1))))
-        assertEquals(Box(Vec3(1,1,1), Vec3(3,3,3)), Box.boundingBox(listOf(Vec3(1,1,1), Vec3(4,4,4))))
+        assertEquals(Box(Vec3(1,1,1), Vec3(2,2,2)), Box.boundingBox(listOf(Vec3(1,1,1))))
+        assertEquals(Box(Vec3(1,1,1), Vec3(4,4,4)), Box.boundingBox(listOf(Vec3(1,1,1), Vec3(3,3,3))))
 
         val vec = listOf(Vec3(5, 6, 8))
         val voxels = Box.boundingBox(vec)!!.voxels()
         assertEquals(vec, voxels)
+    }
+
+    @Test
+    fun dimensions () {
+        assertEquals(Vec3(1,1,1), Box(Vec3(0,0,0), Vec3(1,1,1)).dimensions())
+        assertEquals(Vec3(1,1,1), Box.boundingBox(listOf(Vec3(1,1,1)))!!.dimensions())
     }
 }

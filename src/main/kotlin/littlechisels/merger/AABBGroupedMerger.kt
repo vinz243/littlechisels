@@ -13,14 +13,15 @@ class AABBGroupedMerger(private val merger: VoxelMerger) : VoxelMerger {
 
         return entries
                 .filter { it.key != 0 }
-                .flatMap {
-                    val aabb = Box.boundingBox(it.value)
-                    val voxelGrid = VoxelGrid(aabb!!.dimensions() + 1)
-                    it.value.forEach {vec ->
-                        voxelGrid[vec - aabb.min] = it.key
+                .flatMap { group ->
+                    val aabb = Box.boundingBox(group.value)
+                    val voxelGrid = VoxelGrid(aabb!!.dimensions())
+                    val offset = aabb.min
+                    group.value.forEach { vec ->
+                        voxelGrid[vec - offset] = group.key
                     }
 
-                    return merger.convert(voxelGrid)
+                    return merger.convert(voxelGrid).map { it + offset }
                 }
 
     }

@@ -9,10 +9,10 @@ class ConvexMerger: VoxelMerger {
         val boxes = mutableListOf<Box>()
 
         val dim = grid.dimensions
-        for (height in dim.x - 1 downTo 1) {
-            for (width in dim.y - 1 downTo 1) {
-                for (depth in dim.z - 1 downTo 1) {
-                    val dims = Vec3(height, width, depth)
+        for (height in dim.x downTo 0) {
+            for (width in dim.y downTo 0) {
+                for (depth in dim.z downTo 0) {
+                    val dims = Vec3(height, width, depth) + 1
                     for (x in 0 until (dim.x - height)) {
                         for (y in 0 until (dim.y - width)) {
                             for (z in 0 until (dim.z - depth)) {
@@ -20,6 +20,9 @@ class ConvexMerger: VoxelMerger {
                                 val box = Box(min, min + (dims))
                                 if (!contains(boxes, box)) {
                                     val voxels = box.voxels()
+                                    if (voxels.isEmpty()) {
+                                        continue
+                                    }
                                     val value = grid[voxels[0]]
                                     if (value != 0 && voxels.all {
                                                 grid[it.x, it.y, it.z] == value

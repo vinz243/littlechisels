@@ -14,6 +14,7 @@ internal class MergerTest {
         @JvmStatic
         fun testParams (): Stream<Arguments> {
             return Stream.of(
+                Arguments.of(1, listOf(Box(Vec3(0,0,0), Vec3(1,1,1)))),
                     Arguments.of(4, listOf(Box(Vec3(0, 0, 0), Vec3(3, 3, 3)))),
                     Arguments.of(4, listOf(Box(Vec3(1, 1, 1), Vec3(3, 3, 3)))),
                     Arguments.of(4, listOf(Box(Vec3(1, 1, 1), Vec3(2, 2, 2)))),
@@ -82,30 +83,33 @@ internal class MergerTest {
 
 
 
-    private fun testMerger(dimensions: Vec3, boxes: List<Box>, merger: VoxelMerger) {
-        val grid = VoxelGrid(dimensions)
-        val voxels = boxes.flatMap { it.voxels() }.distinct()
+    private fun testMerger(dimensions: Vec3, wantedBoxes: List<Box>, merger: VoxelMerger) {
+        val voxelGrid = VoxelGrid(dimensions)
+        val inputVoxels = wantedBoxes.flatMap { it.voxels() }.distinct()
 
-        voxels.forEach {
-            grid[it.x, it.y, it.z] = 3
+        inputVoxels.forEach {
+            voxelGrid[it.x, it.y, it.z] = 3
         }
 
-        val convert = merger.convert(grid)
+        val converted = merger.convert(voxelGrid)
 
-        val set = convert.flatMap { it.voxels() }.toSet()
+        val outputVoxels = converted.flatMap { it.voxels() }.toSet()
 
-        println("Optimization = ${(100 * (voxels.size - convert.size) / voxels.size)}%")
+        println("Optimization = ${(100 * (inputVoxels.size - converted.size) / inputVoxels.size)}%")
 
         assertEquals(emptyList<Vec3>(),
-                voxels
+                inputVoxels
                 .distinct()
                 .sortedBy(hashVector())
-                .filter { !set.contains(it) })
+                .filter { !outputVoxels.contains(it) }, "missing voxels")
 
         assertEquals(
-            set.toList() as Any, set.distinct().toList() as Any,
+            outputVoxels.toList() as Any, outputVoxels.distinct().toList() as Any,
                 "Duplicated boxes"
         )
+
+
+        assertEquals(inputVoxels.sortedBy(hashVector()), outputVoxels.sortedBy(hashVector()))
     }
 
     private fun hashVector(): (Vec3) -> Int? {

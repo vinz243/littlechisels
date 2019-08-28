@@ -37,9 +37,9 @@ data class Box(val min: Vec3, val max: Vec3) {
     private fun isAbove(other: Box) = min.x >= other.max.x
 
     fun voxels (): List<Vec3> {
-        return IntRange(min.x, max.x).flatMap { x ->
-            IntRange(min.y, max.y).flatMap { y ->
-                IntRange(min.z, max.z).map { z ->
+        return IntRange(min.x, max.x - 1).flatMap { x ->
+            IntRange(min.y, max.y - 1).flatMap { y ->
+                IntRange(min.z, max.z - 1).map { z ->
                     Vec3(x, y, z)
                 }
             }
@@ -54,6 +54,10 @@ data class Box(val min: Vec3, val max: Vec3) {
         return max - min
     }
 
+    operator fun plus(offset: Vec3): Box {
+        return min(min + offset).max(max + offset)
+    }
+
     companion object {
         private val empty = Box(Vec3(0, 0, 0), Vec3(0, 0, 0))
         fun boundingBox (vectors: List<Vec3>): Box? {
@@ -63,10 +67,10 @@ data class Box(val min: Vec3, val max: Vec3) {
                         .y(minOf(box.min.y, el.y))
                         .z(minOf(box.min.z, el.z))
                 )?.max(
-                    box.max.x(maxOf(box.max.x, el.x))
-                        .y(maxOf(box.max.y, el.y))
-                        .z(maxOf(box.max.z, el.z))
-                ) ?: Box(el, el)
+                    box.max.x(maxOf(box.max.x, el.x + 1))
+                        .y(maxOf(box.max.y, el.y + 1))
+                        .z(maxOf(box.max.z, el.z + 1))
+                ) ?: Box(el, el + 1)
             }
         }
     }
