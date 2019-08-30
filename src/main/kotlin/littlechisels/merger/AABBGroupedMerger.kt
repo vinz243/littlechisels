@@ -1,12 +1,13 @@
 package littlechisels.merger
 
 import littlechisels.math.Box
+import littlechisels.math.IVoxelGrid
 import littlechisels.math.VoxelGrid
 
 class AABBGroupedMerger(private val merger: VoxelMerger) : VoxelMerger {
 
 
-    override fun convert(grid: VoxelGrid): List<Box> {
+    override fun convert(grid: IVoxelGrid): List<Box> {
         val entries = grid.box().voxels()
                 .groupBy { grid[it] }
                 .entries

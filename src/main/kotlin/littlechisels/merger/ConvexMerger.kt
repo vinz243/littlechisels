@@ -1,11 +1,12 @@
 package littlechisels.merger
 
 import littlechisels.math.Box
+import littlechisels.math.IVoxelGrid
 import littlechisels.math.Vec3
 import littlechisels.math.VoxelGrid
 
 class ConvexMerger: VoxelMerger {
-    override fun convert(grid: VoxelGrid): List<Box> {
+    override fun convert(grid: IVoxelGrid): List<Box> {
         val boxes = mutableListOf<Box>()
 
         val dim = grid.dimensions

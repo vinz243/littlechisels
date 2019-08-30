@@ -2,11 +2,12 @@ package littlechisels.merger
 
 import littlechisels.graph.GraphFactory
 import littlechisels.math.Box
+import littlechisels.math.IVoxelGrid
 import littlechisels.math.VoxelGrid
 import org.jgrapht.alg.connectivity.ConnectivityInspector
 
 class ConnectedMerger(private val merger: VoxelMerger): VoxelMerger {
-    override fun convert(grid: VoxelGrid): List<Box> {
+    override fun convert(grid: IVoxelGrid): List<Box> {
         var millis = System.currentTimeMillis()
         val connectedGraph = GraphFactory.createConnectedGraph(grid)
 
