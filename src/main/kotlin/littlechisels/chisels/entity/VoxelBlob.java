@@ -1,15 +1,8 @@
 package littlechisels.chisels.entity;
 
-import minecraft.nbt.NBTTagCompound;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ShortBuffer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
 
 import static littlechisels.chisels.entity.LegacyVoxelBlobFactory.FULL_SIZE;
 

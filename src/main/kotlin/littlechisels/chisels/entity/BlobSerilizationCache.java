@@ -1,7 +1,7 @@
 package littlechisels.chisels.entity;
 
 import io.netty.buffer.Unpooled;
-import minecraft.PacketBuffer;
+import littlechisels.minecraft.PacketBuffer;
 
 import java.nio.ByteBuffer;
 import java.util.zip.Deflater;

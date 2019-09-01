@@ -17,7 +17,14 @@ object Converter {
     @JvmStatic
     fun main(args: Array<String>) {
         val saveFolder = "C:\\Users\\Vincent\\AppData\\Roaming\\.minecraft\\saves\\chisel 2\\"
-        val blockRegistry = BlockRegistry.loadRegistry(WorldSave(File(saveFolder, "level.dat")))
+        val blockRegistry = BlockRegistry.loadRegistry(
+            WorldSave(
+                File(
+                    saveFolder,
+                    "level.dat"
+                )
+            )
+        )
 
         val regionConverter = RegionConverter(
             BlockConverter(blockRegistry),

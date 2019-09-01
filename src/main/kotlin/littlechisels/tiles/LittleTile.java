@@ -9,10 +9,12 @@ import java.util.List;
 public class LittleTile {
     private final LittleTileBox box;
     private final String block;
+    private final int meta;
 
-    public LittleTile(LittleTileBox box, String block) {
+    public LittleTile(LittleTileBox box, String block, int meta) {
         this.box = box;
         this.block = block;
+        this.meta = meta;
     }
 
     public LittleTileBox getBox() {

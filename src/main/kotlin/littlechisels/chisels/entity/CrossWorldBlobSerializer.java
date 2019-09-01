@@ -1,6 +1,6 @@
 package littlechisels.chisels.entity;
 
-import minecraft.PacketBuffer;
+import littlechisels.minecraft.PacketBuffer;
 
 public class CrossWorldBlobSerializer extends BlobSerializer {
 

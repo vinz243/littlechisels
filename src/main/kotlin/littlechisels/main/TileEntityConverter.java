@@ -78,8 +78,11 @@ public class TileEntityConverter {
     private LittleTile toLittleTile(Box it, IVoxelGrid voxelGrid) {
         Vec3 min = it.getMin();
         Vec3 max = it.getMax();
+        int blockState = voxelGrid.get(min);
+        int id = blockState & 4095;
+        int meta = blockState >> 12 & 15;
         return new LittleTile(new LittleTileBox(
                 min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ()
-        ), blockRegistry.getBlockName(voxelGrid.get(min)));
+        ), blockRegistry.getBlockName(id), meta);
     }
 }

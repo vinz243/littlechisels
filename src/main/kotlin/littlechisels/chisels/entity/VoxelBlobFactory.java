@@ -1,7 +1,7 @@
 package littlechisels.chisels.entity;
 
 import io.netty.buffer.Unpooled;
-import minecraft.PacketBuffer;
+import littlechisels.minecraft.PacketBuffer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

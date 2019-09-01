@@ -2,15 +2,12 @@ package littlechisels.main;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.ImmutableBiMap;
 import littlechisels.minecraft.nbt.CompressedStreamTools;
 import littlechisels.minecraft.nbt.NBTBase;
 import littlechisels.minecraft.nbt.NBTTagCompound;
 import littlechisels.minecraft.nbt.NBTTagList;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class BlockRegistry {
