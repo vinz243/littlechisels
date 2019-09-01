@@ -17,9 +17,7 @@ data class Vec3(val x: Int, val y: Int, val z: Int) {
     fun y(value: Int) = Vec3(x, value, z)
     fun z(value: Int) = Vec3(x, y, value)
 
-    operator fun plus(i: Int): Vec3 {
-        return Vec3(x + i, y + i, z + i)
-    }
+    operator fun plus(i: Int): Vec3 = Vec3(x + i, y + i, z + i)
 
     override fun toString(): String {
         return "($x, $y, $z)"
@@ -32,6 +30,8 @@ data class Vec3(val x: Int, val y: Int, val z: Int) {
         y(y + 1), y(y - 1),
         z(z + 1), z(z - 1)
     )
+
+    operator fun minus(i: Int): Vec3 = Vec3(x - i, y - i, z - i)
 
     companion object {
         fun origin(): Vec3 = Vec3(0, 0, 0)

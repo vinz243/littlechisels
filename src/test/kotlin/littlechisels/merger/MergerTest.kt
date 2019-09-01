@@ -3,13 +3,16 @@ package littlechisels.merger
 import littlechisels.math.Box
 import littlechisels.math.Vec3
 import littlechisels.math.VoxelGrid
+import littlechisels.merger.stonecutter.FastStoneCutterMerger
+import littlechisels.merger.stonecutter.StoneCutterMerger
+import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
 
-internal class MergerTest {
+public class MergerTest {
     companion object {
         @JvmStatic
         fun testParams (): Stream<Arguments> {
@@ -53,6 +56,17 @@ internal class MergerTest {
         testMerger(dimensions, boxes, merger)
     }
 
+    @ParameterizedTest
+    @MethodSource("testParams")
+    fun fullStoneCutter(dim: Int, boxes: List<Box>) {
+        if (dim % 2 != 0) return
+
+        val dimensions = Vec3(dim, dim, dim)
+        val merger = StoneCutterMerger(ConvexMerger(), FullBoxInspector())
+
+        testMerger(dimensions, boxes, merger)
+    }
+
 //
 //    @ParameterizedTest
 //    @MethodSource("testParams")
@@ -81,6 +95,12 @@ internal class MergerTest {
         testMerger(dimensions, boxes, merger)
     }
 
+    @Test
+    fun stoneCutter () {
+        val cutterMerger = FastStoneCutterMerger(ConvexMerger())
+
+        testMerger(Vec3(16, 16, 16), listOf(Box(Vec3.origin(), Vec3(8, 16, 8))), cutterMerger)
+    }
 
 
     private fun testMerger(dimensions: Vec3, wantedBoxes: List<Box>, merger: VoxelMerger) {
@@ -108,13 +128,19 @@ internal class MergerTest {
                 "Duplicated boxes"
         )
 
+        assertEquals(emptyList<Vec3>(),
+            outputVoxels
+                .distinct()
+                .sortedBy(hashVector())
+                .filter { !inputVoxels.contains(it) }, "unepceted voxels")
+
 
         assertEquals(inputVoxels.sortedBy(hashVector()), outputVoxels.sortedBy(hashVector()))
     }
 
     private fun hashVector(): (Vec3) -> Int? {
         return {
-            it.x + it.y * 17 + it.z * 19
+            it.x + 17 * (it.y + 23 * it.z)
         }
     }
 

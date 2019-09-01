@@ -3,7 +3,6 @@ package littlechisels.merger
 import littlechisels.math.Box
 import littlechisels.math.IVoxelGrid
 import littlechisels.math.Vec3
-import littlechisels.math.VoxelGrid
 
 class ConvexMerger: VoxelMerger {
     override fun convert(grid: IVoxelGrid): List<Box> {

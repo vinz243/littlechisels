@@ -18,26 +18,49 @@ interface IVoxelGrid {
     fun getIndex(x: Int, y: Int, z: Int) = x + dimensions.x * (y + dimensions.y * z)
 }
 
-data class VoxelGrid(
-    override val dimensions: Vec3,
-    private val grid: IntArray = IntArray(dimensions.x * dimensions.y * dimensions.z) { 0 }) : IVoxelGrid {
+class SubVoxelGrid(
+    val offset: Box, val grid: IVoxelGrid
+): IVoxelGrid {
+    override val dimensions: Vec3
+        get() = offset.dimensions() + 1
 
-    override operator fun get(x: Int, y: Int, z: Int): Int {
-        val index = getIndex(x, y, z)
-        return grid[index]
+    override fun get(x: Int, y: Int, z: Int): Int = grid[Vec3(x, y, z) + offset.min]
+
+    override fun get(pos: Vec3): Int = grid[pos + offset.min]
+
+    override fun set(x: Int, y: Int, z: Int, value: Int) {
+        grid[Vec3(x, y, z) + offset.min] = value
     }
+
+    override fun set(vec3: Vec3, value: Int) {
+        grid[vec3 + offset.min] = value
+    }
+}
+
+class VoxelGrid(
+    override val dimensions: Vec3,
+    private val grid: IntArray = IntArray(dimensions.x * dimensions.y * dimensions.z) { 0 }
+) : IVoxelGrid {
+
+    override operator fun get(x: Int, y: Int, z: Int): Int = get(Vec3(x, y, z))
 
     override operator fun get(pos: Vec3): Int {
         val index = getIndex(pos.x, pos.y, pos.z)
-        return grid[index]
+        try {
+            return grid[index]
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            throw ArrayIndexOutOfBoundsException("Index $pos out of bound for length $dimensions")
+        }
     }
 
-    override operator fun set(x: Int, y: Int, z: Int, value: Int) {
-        grid[getIndex(x, y, z)] = value
-    }
+    override operator fun set(x: Int, y: Int, z: Int, value: Int) = set(Vec3(x, y, z), value)
 
     override operator fun set(vec3: Vec3, value: Int) {
-        grid[getIndex(vec3.x, vec3.y, vec3.z)] = value
+        try {
+            grid[getIndex(vec3.x, vec3.y, vec3.z)] = value
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            throw ArrayIndexOutOfBoundsException("Index $vec3 out of bound for length $dimensions")
+        }
     }
 
 
@@ -58,26 +81,4 @@ data class VoxelGrid(
         result = 31 * result + grid.contentHashCode()
         return result
     }
-}
-
-class FilledGrid(
-    override val dimensions: Vec3,
-    private val value: Int
-) : IVoxelGrid {
-    override fun get(x: Int, y: Int, z: Int): Int {
-        return value
-    }
-
-    override fun get(pos: Vec3): Int {
-        return value
-    }
-
-    override fun set(x: Int, y: Int, z: Int, value: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun set(vec3: Vec3, value: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
 }
