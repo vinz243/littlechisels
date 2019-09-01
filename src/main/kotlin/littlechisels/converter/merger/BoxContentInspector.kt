@@ -1,7 +1,7 @@
-package littlechisels.merger
+package littlechisels.converter.merger
 
-import littlechisels.math.Box
-import littlechisels.math.IVoxelGrid
+import littlechisels.converter.math.Box
+import littlechisels.converter.math.IVoxelGrid
 
 interface BoxContentInspector {
     fun getContent (grid: IVoxelGrid, box: Box): Int?

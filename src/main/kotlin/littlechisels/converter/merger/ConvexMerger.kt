@@ -1,8 +1,8 @@
-package littlechisels.merger
+package littlechisels.converter.merger
 
-import littlechisels.math.Box
-import littlechisels.math.IVoxelGrid
-import littlechisels.math.Vec3
+import littlechisels.converter.math.Box
+import littlechisels.converter.math.IVoxelGrid
+import littlechisels.converter.math.Vec3
 
 class ConvexMerger: VoxelMerger {
     override fun convert(grid: IVoxelGrid): List<Box> {

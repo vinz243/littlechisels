@@ -1,4 +1,4 @@
-package littlechisels.math
+package littlechisels.converter.math
 
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals

@@ -1,8 +1,8 @@
-package littlechisels.graph
+package littlechisels.converter.graph
 
-import littlechisels.math.Vec3
-import littlechisels.math.Voxel
-import littlechisels.math.VoxelGrid
+import littlechisels.converter.math.Vec3
+import littlechisels.converter.math.Voxel
+import littlechisels.converter.math.VoxelGrid
 import org.jgrapht.graph.DefaultEdge
 import org.jgrapht.graph.SimpleGraph
 import org.junit.jupiter.api.Assertions

@@ -1,9 +1,9 @@
-package littlechisels.merger
+package littlechisels.converter.merger
 
-import littlechisels.graph.GraphFactory
-import littlechisels.math.Box
-import littlechisels.math.IVoxelGrid
-import littlechisels.math.VoxelGrid
+import littlechisels.converter.graph.GraphFactory
+import littlechisels.converter.math.Box
+import littlechisels.converter.math.IVoxelGrid
+import littlechisels.converter.math.VoxelGrid
 import org.jgrapht.alg.connectivity.ConnectivityInspector
 
 class ConnectedMerger(private val merger: VoxelMerger): VoxelMerger {

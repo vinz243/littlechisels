@@ -1,4 +1,4 @@
-package littlechisels.math
+package littlechisels.converter.math
 
 interface IVoxelGrid {
     val dimensions: Vec3

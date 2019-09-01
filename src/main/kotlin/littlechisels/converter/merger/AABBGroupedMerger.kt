@@ -1,8 +1,8 @@
-package littlechisels.merger
+package littlechisels.converter.merger
 
-import littlechisels.math.Box
-import littlechisels.math.IVoxelGrid
-import littlechisels.math.VoxelGrid
+import littlechisels.converter.math.Box
+import littlechisels.converter.math.IVoxelGrid
+import littlechisels.converter.math.VoxelGrid
 
 class AABBGroupedMerger(private val merger: VoxelMerger) : VoxelMerger {
 

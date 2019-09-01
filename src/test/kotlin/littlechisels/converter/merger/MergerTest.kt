@@ -1,10 +1,10 @@
-package littlechisels.merger
+package littlechisels.converter.merger
 
-import littlechisels.math.Box
-import littlechisels.math.Vec3
-import littlechisels.math.VoxelGrid
-import littlechisels.merger.stonecutter.FastStoneCutterMerger
-import littlechisels.merger.stonecutter.StoneCutterMerger
+import littlechisels.converter.math.Box
+import littlechisels.converter.math.Vec3
+import littlechisels.converter.math.VoxelGrid
+import littlechisels.converter.merger.stonecutter.FastStoneCutterMerger
+import littlechisels.converter.merger.stonecutter.StoneCutterMerger
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest

@@ -1,8 +1,8 @@
-package littlechisels.merger.stonecutter
+package littlechisels.converter.merger.stonecutter
 
-import littlechisels.math.*
-import littlechisels.merger.BoxContentInspector
-import littlechisels.merger.VoxelMerger
+import littlechisels.converter.math.*
+import littlechisels.converter.merger.BoxContentInspector
+import littlechisels.converter.merger.VoxelMerger
 
 open class StoneCutterMerger(private val merger: VoxelMerger, private val contentInspector: BoxContentInspector) :
     VoxelMerger {

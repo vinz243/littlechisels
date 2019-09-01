@@ -1,4 +1,4 @@
-package littlechisels.math
+package littlechisels.converter.math
 
 /**
  * Represents a 3D box

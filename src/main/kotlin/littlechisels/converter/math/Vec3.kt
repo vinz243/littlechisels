@@ -1,4 +1,4 @@
-package littlechisels.math
+package littlechisels.converter.math
 
 data class Vec3(val x: Int, val y: Int, val z: Int) {
     operator fun plus(vec: Vec3): Vec3 {

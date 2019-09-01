@@ -1,8 +1,8 @@
-package littlechisels.merger
+package littlechisels.converter.merger
 
-import littlechisels.math.Box
-import littlechisels.math.Vec3
-import littlechisels.math.VoxelGrid
+import littlechisels.converter.math.Box
+import littlechisels.converter.math.Vec3
+import littlechisels.converter.math.VoxelGrid
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
