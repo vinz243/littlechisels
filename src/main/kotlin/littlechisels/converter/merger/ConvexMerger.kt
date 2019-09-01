@@ -6,35 +6,36 @@ import littlechisels.converter.math.Vec3
 
 class ConvexMerger: VoxelMerger {
     override fun convert(grid: IVoxelGrid): List<Box> {
+        println("Convert: ${grid.dimensions}")
+
         val boxes = mutableListOf<Box>()
 
-        val dim = grid.dimensions
-        for (height in dim.x downTo 0) {
-            for (width in dim.y downTo 0) {
-                for (depth in dim.z downTo 0) {
-                    val dims = Vec3(height, width, depth) + 1
-                    for (x in 0 until (dim.x - height)) {
-                        for (y in 0 until (dim.y - width)) {
-                            for (z in 0 until (dim.z - depth)) {
-                                val min = Vec3(x, y, z)
-                                val box = Box(min, min + (dims))
-                                if (!contains(boxes, box)) {
-                                    val voxels = box.voxels()
-                                    if (voxels.isEmpty()) {
-                                        continue
-                                    }
-                                    val value = grid[voxels[0]]
-                                    if (value != 0 && voxels.all {
-                                                grid[it.x, it.y, it.z] == value
-                                            }) {
-                                        boxes.add(box)
-                                    }
-                                }
+        var box: Box? = Box(Vec3.origin(), grid.dimensions).max { it - 1 }
+        while (box != null) {
+            println("    $box")
+            for (x in 0 until (grid.dimensions.x - box.min.x)) {
+                for (y in 0 until (grid.dimensions.y - box.min.y)) {
+                    for (z in 0 until (grid.dimensions.z - box.min.z)) {
+                        val offset = Vec3(x, y, z)
+                        println("        $offset")
+                        val movedBox = Box(offset, offset + box.dimensions())
+                        if (!contains(boxes, movedBox)) {
+                            val voxels = movedBox.voxels()
+                            if (voxels.isEmpty()) {
+                                continue
+                            }
+                            val value = grid[voxels[0]]
+                            if (value != 0 && voxels.all {
+                                    grid[it.x, it.y, it.z] == value
+                                }) {
+                                boxes.add(movedBox)
                             }
                         }
                     }
                 }
             }
+
+            box = box.contractSide()
         }
 
         return boxes

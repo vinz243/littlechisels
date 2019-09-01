@@ -7,6 +7,7 @@ data class Box(val min: Vec3, val max: Vec3) {
 
     fun min (value: Vec3) = Box(value, max)
     fun max (value: Vec3) = Box(min, value)
+    fun max (function: (Vec3) -> Vec3) = Box(min, function(max))
 
     /**
      * Returns true if the box contains said point (inclusive)
@@ -43,6 +44,25 @@ data class Box(val min: Vec3, val max: Vec3) {
                     Vec3(x, y, z)
                 }
             }
+        }
+    }
+
+    fun contractSide (): Box? {
+        with (max) {
+            if (x > 1 && x > y && x > z) {
+                return max(max.x(x - 1))
+            }
+
+            if (y > 1 && y > z) {
+                return max(max.y(y - 1))
+            }
+
+
+            if (z > 1) {
+                return max(max.z(z - 1))
+            }
+
+            return null
         }
     }
 

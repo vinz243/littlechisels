@@ -26,12 +26,12 @@ open class StoneCutterMerger(private val merger: VoxelMerger, private val conten
                     val box = Box(offset, offset + gridSize)
 
                     val content = contentInspector.getContent(grid, box)
-                    println("trying $box => $content")
 
                     reductedGrid[i, j, k] = content ?: 0
 
                     if (content == null) {
-                        println("entering $box")
+                        println("trying $box => $content")
+
                         val subGrid = SubVoxelGrid(box, grid)
 
                         boxes += doConvert(subGrid).map { it + box.min }

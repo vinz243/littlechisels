@@ -3,6 +3,7 @@ package littlechisels.converter.math
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 internal class BoxTests {
@@ -47,5 +48,16 @@ internal class BoxTests {
     fun dimensions () {
         assertEquals(Vec3(1,1,1), Box(Vec3(0,0,0), Vec3(1,1,1)).dimensions())
         assertEquals(Vec3(1,1,1), Box.boundingBox(listOf(Vec3(1,1,1)))!!.dimensions())
+    }
+
+    @Test
+    fun contractSide() {
+        assertNull(Box(Vec3(0, 0, 0), Vec3(0, 0, 0)).contractSide())
+        assertNull(Box(Vec3(0, 0, 0), Vec3(1, 1, 1)).contractSide())
+        val square2 = Box(Vec3(0, 0, 0), Vec3(2, 2, 2))
+        assertEquals(
+            square2.contractSide()!!.contractSide(),
+                     Box(Vec3(0, 0, 0), Vec3(2, 1, 1)))
+        assertNull(square2.contractSide()!!.contractSide()!!.contractSide()!!.contractSide())
     }
 }
