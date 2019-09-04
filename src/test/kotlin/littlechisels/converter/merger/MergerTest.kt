@@ -45,13 +45,15 @@ public class MergerTest {
                     ))
             )
         }
+
+        val cache = ConvexMergerCache()
     }
 
     @ParameterizedTest
     @MethodSource("testParams")
     fun cubicMerger(dim: Int, boxes: List<Box>) {
         val dimensions = Vec3(dim, dim, dim)
-        val merger = ConvexMerger()
+        val merger = cache.getConvexMerger(dimensions)
 
         testMerger(dimensions, boxes, merger)
     }
@@ -62,7 +64,7 @@ public class MergerTest {
         if (dim % 2 != 0) return
 
         val dimensions = Vec3(dim, dim, dim)
-        val merger = StoneCutterMerger(ConvexMerger(), FullBoxInspector())
+        val merger = StoneCutterMerger(cache.getConvexMerger(Vec3(2,2,2)), FullBoxInspector())
 
         testMerger(dimensions, boxes, merger)
     }
@@ -72,7 +74,7 @@ public class MergerTest {
 //    @MethodSource("testParams")
 //    fun nonCubicMerger(dim: Int, boxes: List<Box>) {
 //        val dimensions = Vec3(dim, dim + 1, dim + 2)
-//        val merger = ConvexMerger()
+//        val merger = littlechisels.converter.merger.MergerTest.Companion.convexMerger(dimensions)
 //
 //        testMerger(dimensions, boxes, merger)
 //    }
@@ -81,7 +83,7 @@ public class MergerTest {
     @MethodSource("testParams")
     fun aabbMerger(dim: Int, boxes: List<Box>) {
         val dimensions = Vec3(dim, dim, dim)
-        val merger = AABBGroupedMerger(ConvexMerger())
+        val merger = AABBGroupedMerger(cache.getConvexMerger(dimensions))
 
         testMerger(dimensions, boxes, merger)
     }
@@ -90,16 +92,17 @@ public class MergerTest {
     @MethodSource("testParams")
     fun connectedMerger(dim: Int, boxes: List<Box>) {
         val dimensions = Vec3(dim, dim, dim)
-        val merger = ConnectedMerger(ConvexMerger())
+        val merger = ConnectedMerger(cache.getConvexMerger(dimensions))
 
         testMerger(dimensions, boxes, merger)
     }
 
     @Test
     fun stoneCutter () {
-        val cutterMerger = FastStoneCutterMerger(ConvexMerger())
+        val dimensions = Vec3(16, 16, 16)
+        val cutterMerger = FastStoneCutterMerger(cache.getConvexMerger(dimensions))
 
-        testMerger(Vec3(16, 16, 16), listOf(Box(Vec3.origin(), Vec3(8, 16, 8))), cutterMerger)
+        testMerger(dimensions, listOf(Box(Vec3.origin(), Vec3(8, 16, 8))), cutterMerger)
     }
 
 

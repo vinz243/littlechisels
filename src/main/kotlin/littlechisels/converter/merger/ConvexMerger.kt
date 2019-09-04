@@ -3,22 +3,20 @@ package littlechisels.converter.merger
 import littlechisels.converter.math.Box
 import littlechisels.converter.math.IVoxelGrid
 import littlechisels.converter.math.Vec3
+import java.util.*
 
-class ConvexMerger: VoxelMerger {
+class ConvexMerger(val dimensionList: List<Vec3>): VoxelMerger {
     override fun convert(grid: IVoxelGrid): List<Box> {
         println("Convert: ${grid.dimensions}")
 
         val boxes = mutableListOf<Box>()
 
-        var box: Box? = Box(Vec3.origin(), grid.dimensions).max { it - 1 }
-        while (box != null) {
-            println("    $box")
-            for (x in 0 until (grid.dimensions.x - box.min.x)) {
-                for (y in 0 until (grid.dimensions.y - box.min.y)) {
-                    for (z in 0 until (grid.dimensions.z - box.min.z)) {
+        for (boxSize in dimensionList) {
+            for (x in 0 until (grid.dimensions.x - boxSize.x)) {
+                for (y in 0 until (grid.dimensions.y - boxSize.y)) {
+                    for (z in 0 until (grid.dimensions.z - boxSize.z)) {
                         val offset = Vec3(x, y, z)
-                        println("        $offset")
-                        val movedBox = Box(offset, offset + box.dimensions())
+                        val movedBox = Box(offset, offset + boxSize + 1 )
                         if (!contains(boxes, movedBox)) {
                             val voxels = movedBox.voxels()
                             if (voxels.isEmpty()) {
@@ -35,7 +33,6 @@ class ConvexMerger: VoxelMerger {
                 }
             }
 
-            box = box.contractSide()
         }
 
         return boxes
@@ -49,5 +46,21 @@ class ConvexMerger: VoxelMerger {
         }
 
         return false
+    }
+
+    companion object {
+        fun buildConvexMerger (size: Vec3): ConvexMerger {
+            val list = mutableListOf<Vec3>()
+            for (i in 0..size.x) {
+                for (j in 0..size.y) {
+                    for (k in 0..size.z) {
+                        list.add(Vec3(i, j, k))
+                    }
+                }
+            }
+
+            return ConvexMerger(list.sortedByDescending { it.area() })
+        }
+
     }
 }

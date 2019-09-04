@@ -1,5 +1,6 @@
 package littlechisels.main
 
+import littlechisels.converter.math.Vec3
 import littlechisels.converter.merger.ConvexMerger
 import littlechisels.converter.merger.stonecutter.FastStoneCutterMerger
 import littlechisels.minecraft.anvil.RegionFile
@@ -28,7 +29,7 @@ object Converter {
 
         val regionConverter = RegionConverter(
             BlockConverter(blockRegistry),
-            TileEntityConverter(blockRegistry, FastStoneCutterMerger(ConvexMerger()))
+            TileEntityConverter(blockRegistry, FastStoneCutterMerger(ConvexMerger.buildConvexMerger(Vec3.unit() * 16)))
         )
 
         Files.list(Paths.get(saveFolder + "region"))
