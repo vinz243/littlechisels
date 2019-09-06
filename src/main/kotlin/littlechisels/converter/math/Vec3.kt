@@ -2,7 +2,7 @@ package littlechisels.converter.math
 
 data class Vec3(val x: Int, val y: Int, val z: Int) {
 
-    fun area () = x * y * z
+    fun fakeArea () = (x + 3) * (y + 2) * (z + 1)
 
     operator fun plus(vec: Vec3): Vec3 {
         return Vec3(x + vec.x, y + vec.y, z + vec.z)

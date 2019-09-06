@@ -72,7 +72,6 @@ public class CompressedStreamTools {
         if (nbtbase instanceof NBTTagCompound) {
             return (NBTTagCompound) nbtbase;
         } else {
-            System.out.println("nbtbase = " + nbtbase);
             throw new IOException("Root tag must be a named compound tag");
         }
     }

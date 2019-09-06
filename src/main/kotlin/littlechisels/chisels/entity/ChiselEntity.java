@@ -101,8 +101,6 @@ public class ChiselEntity {
         if (v == null || v.length == 0) {
             return new LegacyVoxelBlobFactory(compound).create();
         }
-
-        System.out.println("v = " + Arrays.toString(v));
         return new VoxelBlobFactory().blobFromBytes(v);
     }
 }

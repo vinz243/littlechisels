@@ -1,39 +1,27 @@
 package littlechisels.converter.merger
 
 import littlechisels.converter.graph.GraphFactory
-import littlechisels.converter.math.Box
-import littlechisels.converter.math.IVoxelGrid
-import littlechisels.converter.math.VoxelGrid
+import littlechisels.converter.math.*
 import org.jgrapht.alg.connectivity.ConnectivityInspector
 
 class ConnectedMerger(private val merger: VoxelMerger): VoxelMerger {
     override fun convert(grid: IVoxelGrid): List<Box> {
-        var millis = System.currentTimeMillis()
         val connectedGraph = GraphFactory.createConnectedGraph(grid)
-
-        println("Established graph in ${System.currentTimeMillis() - millis}ms")
-        millis = System.currentTimeMillis()
 
         val inspector = ConnectivityInspector(connectedGraph)
         val connectedSets = inspector.connectedSets()
 
-        println("Inspected connectivity ${System.currentTimeMillis() - millis}ms")
-        millis = System.currentTimeMillis()
-
-        val flatMap = connectedSets.flatMap { voxels ->
-            val boundingBox = Box.boundingBox(voxels.map { it.coords })
+        return connectedSets.flatMap { voxels ->
+            val boundingBox = Box.boundingBox(voxels.mapNotNull<Voxel?, Vec3> { it?.coords })
             val smallerGrid = VoxelGrid(boundingBox!!.dimensions())
             val offset = boundingBox.min
-            voxels.forEach { vec ->
-                smallerGrid[vec.coords - offset] = vec.material
+            voxels.forEach<Voxel?> { vec ->
+                if (vec != null) {
+                    smallerGrid[vec.coords - offset] = vec.material
+                }
             }
             val converted = merger.convert(smallerGrid)
             converted.map { it + offset }
         }
-
-        println("Merged ${System.currentTimeMillis() - millis}ms")
-
-
-        return flatMap
     }
 }

@@ -26,7 +26,7 @@ public class TileEntityConverter {
         this.voxelMerger = voxelMerger;
     }
 
-    public void convertTileEntities(NBTTagCompound level) throws IOException {
+    void convertTileEntities(NBTTagCompound level) throws IOException {
         NBTTagList entities = level.getTagList("TileEntities", 10);
         int index = 0;
         if (entities.tagCount() > 0) {

@@ -5,10 +5,8 @@ import littlechisels.converter.math.IVoxelGrid
 import littlechisels.converter.math.Vec3
 import java.util.*
 
-class ConvexMerger(val dimensionList: List<Vec3>): VoxelMerger {
+class ConvexMerger(private val dimensionList: List<Vec3>) : VoxelMerger {
     override fun convert(grid: IVoxelGrid): List<Box> {
-        println("Convert: ${grid.dimensions}")
-
         val boxes = mutableListOf<Box>()
 
         for (boxSize in dimensionList) {
@@ -16,7 +14,7 @@ class ConvexMerger(val dimensionList: List<Vec3>): VoxelMerger {
                 for (y in 0 until (grid.dimensions.y - boxSize.y)) {
                     for (z in 0 until (grid.dimensions.z - boxSize.z)) {
                         val offset = Vec3(x, y, z)
-                        val movedBox = Box(offset, offset + boxSize + 1 )
+                        val movedBox = Box(offset, offset + boxSize + 1)
                         if (!contains(boxes, movedBox)) {
                             val voxels = movedBox.voxels()
                             if (voxels.isEmpty()) {
@@ -49,7 +47,7 @@ class ConvexMerger(val dimensionList: List<Vec3>): VoxelMerger {
     }
 
     companion object {
-        fun buildConvexMerger (size: Vec3): ConvexMerger {
+        fun buildConvexMerger(size: Vec3): ConvexMerger {
             val list = mutableListOf<Vec3>()
             for (i in 0..size.x) {
                 for (j in 0..size.y) {
@@ -59,7 +57,9 @@ class ConvexMerger(val dimensionList: List<Vec3>): VoxelMerger {
                 }
             }
 
-            return ConvexMerger(list.sortedByDescending { it.area() })
+            list.sortWith(Comparator { a, b -> if (a.x >= b.x && a.y >= b.y) -1 else if (a.x >= b.x && a.z >= b.z) -1 else 1})
+
+            return ConvexMerger(list)
         }
 
     }

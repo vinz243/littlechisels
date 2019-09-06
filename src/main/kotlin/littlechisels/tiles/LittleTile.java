@@ -80,7 +80,7 @@ public class LittleTile {
 //            nbt.setBoolean("nodrop", true);
 
         nbt.setString("block", block);
-        nbt.setInteger("meta", 0);
+        nbt.setInteger("meta", meta);
 
     }
 

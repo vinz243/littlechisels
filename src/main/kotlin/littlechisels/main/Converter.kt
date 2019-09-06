@@ -2,22 +2,21 @@ package littlechisels.main
 
 import littlechisels.converter.math.Vec3
 import littlechisels.converter.merger.ConvexMerger
-import littlechisels.converter.merger.stonecutter.FastStoneCutterMerger
+import littlechisels.converter.merger.stonecutter.FullStoneCutterMerger
 import littlechisels.minecraft.anvil.RegionFile
-
+import me.tongfei.progressbar.ProgressBar
+import me.tongfei.progressbar.ProgressBarStyle
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
+import kotlin.streams.toList
 
 object Converter {
-
-    val MAX = 256
-
     @Throws(IOException::class)
     @JvmStatic
     fun main(args: Array<String>) {
-        val saveFolder = "C:\\Users\\Vincent\\AppData\\Roaming\\.minecraft\\saves\\chisel 2\\"
+        val saveFolder = args[0]
         val blockRegistry = BlockRegistry.loadRegistry(
             WorldSave(
                 File(
@@ -27,19 +26,27 @@ object Converter {
             )
         )
 
+        println("Loaded block registry with ${blockRegistry.registry.size} mappings")
+
         val regionConverter = RegionConverter(
             BlockConverter(blockRegistry),
-            TileEntityConverter(blockRegistry, FastStoneCutterMerger(ConvexMerger.buildConvexMerger(Vec3.unit() * 16)))
+            TileEntityConverter(blockRegistry, FullStoneCutterMerger(ConvexMerger.buildConvexMerger(Vec3.unit())))
         )
 
-        Files.list(Paths.get(saveFolder + "region"))
+        val regionFiles = Files.list(Paths.get(saveFolder + "region"))
             .filter { it.toString().endsWith(".mca") }
-            .forEach { file ->
-                val regionfile = RegionFile(file.toFile())
-                regionConverter.convertRegion(regionfile)
+            .toList()
 
-                regionfile.close()
+        ProgressBar("Converting regions", regionFiles.size.toLong(), ProgressBarStyle.ASCII).use {
+            regionFiles.parallelStream().forEach { file ->
+                val regionFile = RegionFile(file.toFile())
+                regionConverter.convertRegion(regionFile)
+
+                regionFile.close()
+
+                it.step()
             }
+        }
     }
 
 }
